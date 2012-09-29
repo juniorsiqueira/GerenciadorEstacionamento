@@ -19,11 +19,11 @@ public class FachadaTeste {
   @Before
   
   public void apagar() {
-File file = new File("arquivo.bin");    
-if (file.exists()) {
-  file.delete();
-}
-}
+    File file = new File("arquivo.bin");    
+     if (file.exists()) {
+       file.delete();
+    }
+  }
 
     @Test
     public void pesquisarVeiculoTest() throws VeiculoExistenteException, IOException, ClassNotFoundException {
@@ -298,26 +298,28 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         Assert.assertNotNull(f.Logar(thiago.getLogin(), thiago.getSenha()));
         Assert.assertFalse(f.Logar(thiago.getLogin(), "APX"));
        
-       // Fachada f2 = new Fachada();
-       // Assert.assert
+        Fachada f2 = new Fachada();
+        Assert.assertNotNull(f2.Logar(thiago.getLogin(), junior.getLogin()));
+        Assert.assertFalse(f2.Logar(thiago.getLogin(), "Analise Projeto de Sistemas"));
     }
 
     @Test
     public void getVeiculosNoEstacionamentoTest() throws IOException, ClassNotFoundException, VeiculoExistenteException {
-      //THIAGO QUE VAI AJEITAR
+      
         
-        /*     Fachada f = new Fachada();
+       Fachada f = new Fachada();
         List<Veiculo> listaVeiculos = new ArrayList<Veiculo>();
         Veiculo carro = new Veiculo();
         carro.setPlaca("MOH");
         carro.setModelo("2012");
         carro.setCor("Azul");
-        
+        f.cadastrarVeiculo(carro);
         Veiculo carroPreto = new Veiculo("MOH", "2012", "Preto");
         Veiculo carro1 = carro;
         carro1.setPlaca("MOH");
         carro1.setModelo("2012");
         carro1.setCor("Azul");
+        f.cadastrarVeiculo(carroPreto);
         GerenteVeiculo g = new GerenteVeiculo();
         listaVeiculos.add(carro);
         listaVeiculos.add(carroPreto);
@@ -327,11 +329,11 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         Assert.assertEquals("2012", carro.getModelo());
         Assert.assertEquals(carro1, carro);
         Assert.assertEquals(carro.getModelo(), carroPreto.getModelo());
-        Assert.assertNotSame(f.getVeiculosNoEstacionamento(), g.getVeiculosNoEstacionamento());
+        Assert.assertSame(f.getVeiculosNoEstacionamento(), g.getVeiculosNoEstacionamento());
         Assert.assertSame(f.liberarVeiculo(carro.getPlaca()), g.liberarVeiculo(carro.getPlaca()));
         Assert.assertNotNull(f.getVeiculosNoEstacionamento());
         Assert.assertNotNull(g.getVeiculosNoEstacionamento());
-        Assert.assertSame("Objetos Iguais", carro1, carro);*/
+        Assert.assertSame("Objetos Iguais", carro1, carro);
     }
 
     @Test
@@ -350,7 +352,9 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         f.DemitirFuncionario(francisco.getCpf());
         Assert.assertNull(f.pesquisarFuncionario(thiago.getCpf()));
         Assert.assertNull(f.pesquisarFuncionario(francisco.getCpf()));
-    }
+        
+        
+         }
 
     @Test
     public void demitirFuncionarioTest() throws funcionarioExistenteException, IOException, ClassNotFoundException, VeiculoExistenteException {
@@ -444,7 +448,7 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         clientefisico.setNome("Thiago Mello");
         clientefisico.setCpf("7364728");
         
-        fachada.cadastrarClienteVipPessoaFisica(clientefisico.getCpf());
+        fachada.cadastrarClienteFisico(clientefisico);
         Assert.assertNotNull(clientefisico.getNome(),clientefisico.getTel());
         fachada.cancelarCadastroClienteComum(clientefisico);
         Assert.assertNull(fachada.pesquisarClienteFisico(clientefisico.getCpf()));
@@ -466,9 +470,9 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         
         fachada.cadastroClienteVipPessoaJuridica(clientejuridico.getCpf());
         Assert.assertNotNull(clientejuridico.getNome(),clientejuridico.getTel());
-        fachada.cancelarCadastroClienteVipPessoaJuridica(clientejuridico.getCpf(),clientejuridico.getTel());
-        Assert.assertNull(fachada.pesquisarClienteJuridicoVip(clientejuridico.getCpf()));
-        Assert.assertEquals(null, fachada.pesquisarClienteFisico(clientejuridico.getCpf()));
+        fachada.cancelarCadastroClienteVipPessoaJuridica(clientejuridico.getCnpj(),clientejuridico.getTel());
+        Assert.assertNull(fachada.pesquisarClienteJuridicoVip(clientejuridico.getCnpj()));
+        Assert.assertEquals(null, fachada.pesquisarClienteJuridicoVip(clientejuridico.getCnpj()));
           
     }
     
@@ -485,13 +489,13 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         
         ClienteJuridico clientejuridico = new ClienteJuridico();
         clientejuridico.setNome("Vox Tecnologia");
-        clientejuridico.setCpf("065.465.54-34");
+        clientejuridico.setCnpj("065.465.540001-34");
         fachada.cadastrarClienteJuridico(clientejuridico);
    
         Assert.assertNotNull(clientejuridico.getNome(),clientejuridico.getTel());
         fachada.cancelarCadastroClienteJuridicoComum(clientejuridico);
-        Assert.assertNull(fachada.pesquisarClienteFisico(clientejuridico.getCpf()));
-        Assert.assertEquals(null, fachada.pesquisarClienteFisico(clientejuridico.getCpf()));
+        Assert.assertNull(fachada.pesquisarClienteJuridico(clientejuridico.getCnpj()));
+        Assert.assertEquals(null, fachada.pesquisarClienteJuridico(clientejuridico.getCnpj()));
           
         
     
@@ -592,6 +596,10 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         Assert.assertTrue(fachada.pesquisarVeiculo("333-ddd").isPolido());
         Assert.assertEquals(v.isPolido(),fachada.pesquisarVeiculo("333-ddd").isPolido());
 
+        
+        Fachada fachada2 = new Fachada();
+        Assert.assertTrue(fachada2.pesquisarVeiculo("333-ddd").isPolido());
+        Assert.assertEquals(v.isPolido(),fachada2.pesquisarVeiculo("333-ddd").isPolido());
     }
 
     @Test
@@ -606,6 +614,10 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         fachada.cadastrarVeiculo(v);
         Assert.assertTrue(fachada.pesquisarVeiculo("333-ddd").isTroca_oleo());
         Assert.assertEquals(v.isTroca_oleo(),fachada.pesquisarVeiculo("333-ddd").isTroca_oleo());
+
+        Fachada fachada2 = new Fachada();
+         Assert.assertTrue(fachada2.pesquisarVeiculo("333-ddd").isTroca_oleo());
+        Assert.assertEquals(v.isTroca_oleo(),fachada2.pesquisarVeiculo("333-ddd").isTroca_oleo());
 
     }
 
@@ -625,6 +637,10 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         Assert.assertFalse(fachada.pesquisarVeiculo("333-ddd").isLavado());
         
 
+        Fachada fachada2 = new Fachada();
+       Assert.assertEquals(v.isLavado(),fachada2.pesquisarVeiculo("333-ddd").isLavado());
+       Assert.assertFalse(fachada2.pesquisarVeiculo("333-ddd").isLavado());
+        
     }
 
     @Test
@@ -646,6 +662,11 @@ f2.pesquisarVeiculo(fusca.getPlaca()));
         v.setTroca_oleo(true);
         System.out.println(valor + ""+ fachada.valorSevico(v));
         Assert.assertEquals(""+ valor, "" + fachada.valorSevico(v));
-
+        
+         Fachada fachada2 = new Fachada();
+        Assert.assertEquals("" + valor, "" + fachada2.valorSevico(v));
+        v.setTroca_oleo(true);
+        System.out.println(valor + ""+ fachada2.valorSevico(v));
+        Assert.assertEquals(""+ valor, "" + fachada2.valorSevico(v));
     }
 }
